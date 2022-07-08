@@ -50,8 +50,8 @@ class InputSample(object):
                     ans_end = int(lb[2]) + len(question) + 2
                     entity = lb[0]
 
-                    # print(lb[3])                                  # In ra để kiểm tra xem khớp với câu trả lời có trong data chưa
-                    # print(" ".join(se[ans_start:ans_end+1]))
+                    print(lb[3])                                  # In ra để kiểm tra xem khớp với câu trả lời có trong data chưa
+                    print(" ".join(se[ans_start:ans_end+1]))
 
                     label_idxs.append([entity, ans_start, ans_end])
                 sample['label_idx'] = label_idxs
@@ -78,16 +78,18 @@ class InputSample(object):
                         start = int(lb[1]) + len(question) + 2
                         end = int(lb[2]) + len(question) + 2
                         
-                        if start < (idx + 2 + len(question)) or end > (idx + len(sent)):            # Nếu start hoặc end không thuộc context được cắt thì start = 0, end = 0
+                        if start >= idx and end <= (idx + len(ctx)):
+                            start = start + 2 + len(question) - idx
+                            end = end + 2 + len(question) - idx
+                        else:
                             start = 0
                             end = 0
-                        else:
-                            if start >= (idx + 2 + len(question)) and start <= (idx + len(sent)):   # Nếu start trong khoảng được cắt
-                                start = start - idx
-                            if end >= (idx + 2 + len(question)) and end <= (idx + len(sent)):       # Nếu end trong khoảng được cắt
-                                end = end - idx
+                        
+                        if end >= self.max_seq_length:
+                            end = self.max_seq_length - 1
                         label_idxs.append([lb[0], start, end])
-
+                        print(lb[3])                                  # In ra để kiểm tra xem khớp với câu trả lời có trong data chưa
+                        print(" ".join(se[start:end+1]))
                     idx = idx + self.stride 
 
                     sample['label_idx'] = label_idxs
@@ -184,7 +186,7 @@ class MyDataSet(Dataset):
                 start.append(int(lb[1]))
                 end.append(int(lb[2]))
             try:
-                entity.append(self.label_2int[lb[0]])
+                entity.append(1)
             except:
                 print(lb)
         
