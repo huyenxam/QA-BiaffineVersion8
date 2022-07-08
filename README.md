@@ -1,4 +1,4 @@
-Cắt bớt context dài không dùng stride và sử dụng phobert
+Sử dụng slide window 
 ## Model Architecture
 
 <p float="left" align="center">
@@ -17,8 +17,8 @@ Cắt bớt context dài không dùng stride và sử dụng phobert
 ## Training & Evaluation
 
 ```bash
-git clone https://github.com/huyenxam/QA-Biaffine.git
-cd QA-Biaffine
+git clone https://github.com/huyenxam/QA-BiaffineVersion1.git
+cd QA-BiaffineVersion1
 pip install -r requirements.txt
 bash train.sh
 ```
@@ -38,4 +38,4 @@ bash train.sh
 - [Huggingface Transformers](https://github.com/huggingface/transformers)
 
 # QA-Biaffine
-# QA-BiaffineVersion8
+# QA-BiaffineVersion1

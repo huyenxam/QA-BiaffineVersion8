@@ -160,7 +160,7 @@ class Trainer(object):
         seq_lengths = torch.cat(seq_lengths, dim=0)
 
         predictions = batch_computeF1(labels, outputs, seq_lengths, self.label_set)
-        exact_match, f1 = evaluate(predictions, self.args.max_char_len, self.args.max_seq_length, mode)
+        exact_match, f1 = evaluate(predictions, self.args.max_char_len, self.args.max_seq_length, self.args.stride, mode)
 
         print()
         print(exact_match)

@@ -8,9 +8,9 @@ class WordRep(nn.Module):
     def __init__(self, args):
         super(WordRep, self).__init__()
         print("build word representation...")
-        self.use_char = args.use_char                       # Có sử dụng model CharCNN không
+        self.use_char = args.use_char
         self.bert = AutoModel.from_pretrained(args.model_name_or_path)
-        self.num_layer_bert = args.num_layer_bert           # Số lớp bert muốn lấy
+        self.num_layer_bert = args.num_layer_bert
         if self.use_char:
             self.char_feature = CharCNN(hidden_dim=args.char_hidden_dim,
                                         vocab_size=args.char_vocab_size, embedding_dim=args.char_embedding_dim)
@@ -36,4 +36,3 @@ class WordRep(nn.Module):
         else:
             # bert_features = [bs, max_sep, 768]
             return bert_features
-
