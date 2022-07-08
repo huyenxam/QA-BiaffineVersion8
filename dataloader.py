@@ -50,8 +50,8 @@ class InputSample(object):
                     ans_end = int(lb[2]) + len(question) + 2
                     entity = lb[0]
 
-                    print(lb[3])                                  # In ra để kiểm tra xem khớp với câu trả lời có trong data chưa
-                    print(" ".join(se[ans_start:ans_end+1]))
+                    # print(lb[3])                                  # In ra để kiểm tra xem khớp với câu trả lời có trong data chưa
+                    # print(" ".join(se[ans_start:ans_end+1]))
 
                     label_idxs.append([entity, ans_start, ans_end])
                 sample['label_idx'] = label_idxs
@@ -78,7 +78,7 @@ class InputSample(object):
                         start = int(lb[1]) + len(question) + 2
                         end = int(lb[2]) + len(question) + 2
                         
-                        if start >= idx and end <= (idx + len(ctx)):
+                        if start >= idx and end < (idx + len(ctx)):
                             start = start + 2 + len(question) - idx
                             end = end + 2 + len(question) - idx
                         else:
@@ -88,8 +88,8 @@ class InputSample(object):
                         if end >= self.max_seq_length:
                             end = self.max_seq_length - 1
                         label_idxs.append([lb[0], start, end])
-                        print(lb[3])                                  # In ra để kiểm tra xem khớp với câu trả lời có trong data chưa
-                        print(" ".join(se[start:end+1]))
+                        # print(lb[3])                                  # In ra để kiểm tra xem khớp với câu trả lời có trong data chưa
+                        # print(" ".join(se[start:end+1]))
                     idx = idx + self.stride 
 
                     sample['label_idx'] = label_idxs
