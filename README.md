@@ -1,4 +1,4 @@
-Sử dụng slide window 
+Sử dụng slide window cho data không tách từ
 ## Model Architecture
 
 <p float="left" align="center">
