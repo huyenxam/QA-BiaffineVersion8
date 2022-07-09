@@ -17,8 +17,8 @@ Sử dụng slide window cho data không tách từ
 ## Training & Evaluation
 
 ```bash
-git clone https://github.com/huyenxam/QA-BiaffineVersion1.git
-cd QA-BiaffineVersion1
+git clone https://github.com/huyenxam/QA-BiaffineVersion8.git
+cd QA-BiaffineVersion8
 pip install -r requirements.txt
 bash train.sh
 ```
@@ -37,5 +37,4 @@ bash train.sh
 
 - [Huggingface Transformers](https://github.com/huggingface/transformers)
 
-# QA-Biaffine
-# QA-BiaffineVersion1
+# QA-BiaffineVersion8

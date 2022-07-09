@@ -1,15 +1,7 @@
-import json, string
+import json
 from metrics.f1_score import f1_score
 from metrics.exact_match_score import exact_match_score
 from dataloader import *
-
-
-def white_space_fix(text):
-    char_to_replace = list(string.punctuation)
-    for k in char_to_replace:
-        v = ' ' + k  + ' '
-        text = text.replace(k , v)
-    return ' '.join(text.split())
 
 def evaluate(predictions, max_char_len, max_seq_length, stride, mode):
     list_sample = []
@@ -27,9 +19,10 @@ def evaluate(predictions, max_char_len, max_seq_length, stride, mode):
     with open(path, 'r', encoding='utf8') as f:
         list_sample = json.load(f)
 
-    for i, sample in enumerate(list_sample): 
+    for sample in list_sample: 
         context = sample['context'].split(' ')
         question = sample['question'].split(' ')
+        text_context = context
 
         max_seq = max_seq_length - len(question) - 2 
         if len(context) <= max_seq:
@@ -43,7 +36,10 @@ def evaluate(predictions, max_char_len, max_seq_length, stride, mode):
 
             labels = sample['label']
             for lb in labels:
-                ground_truth = white_space_fix(lb[3])
+                start = int(lb[1])
+                end = int(lb[2])
+                ground_truth = " ".join(text_context[start:end+1])
+                # ground_truth = lb[3]
                 # print(ground_truth)
                 # print(label_prediction)
                 f1_idx.append(f1_score(label_prediction, ground_truth))
@@ -70,7 +66,10 @@ def evaluate(predictions, max_char_len, max_seq_length, stride, mode):
             f1_idx = [0]
             extract_match_idx = [0]
             for lb in labels:
-                ground_truth = white_space_fix(lb[3])
+                start = int(lb[1])
+                end = int(lb[2])
+                ground_truth = " ".join(text_context[start:end+1])
+                # ground_truth = lb[3] 
                 # print(ground_truth)
                 # print(label_prediction)
                 f1_idx.append(f1_score(label_prediction, ground_truth))
@@ -83,4 +82,39 @@ def evaluate(predictions, max_char_len, max_seq_length, stride, mode):
     
     return exact_match, f1
 
+    # list_sample = InputSample(path=path, max_char_len=max_char_len, max_seq_length=max_seq_length, stride=stride).get_sample()
+    # for i, sample in enumerate(list_sample):
+
+    #     context = sample['context']
+    #     question = sample['question']
+    #     sentence = ['cls'] + question + ['sep'] + context
+
+    #     labels = sample['label_idx']
+
+    #     f1_idx = [0]
+    #     extract_match_idx = [0]
+    #     for lb in labels:
+
+    #         start = lb[1]
+    #         end = lb[2]
+    #         ground_truth = " ".join(sentence[start:end+1])
+            
+    #         start_pre = int(predictions[i][1])
+    #         end_pre = int(predictions[i][2])
+    #         label_prediction = " ".join(sentence[start_pre:end_pre+1])
+    #         if start == 0 and end == 0:
+    #             break
+    #         f1_idx.append(f1_score(label_prediction, ground_truth))
+    #         extract_match_idx.append(exact_match_score(label_prediction, ground_truth))
+    #         # print(ground_truth)
+    #         # print(label_prediction)
+            
+    #     f1 += max(f1_idx)
+    #     exact_match += max(extract_match_idx)
+    #     total += 1
+        
+
+    # exact_match = 100.0 * exact_match / total
+    # f1 = 100.0 * f1 / total
     
+    # return exact_match, f1
